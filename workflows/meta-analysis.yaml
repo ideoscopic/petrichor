@@ -1,0 +1,79 @@
+name: "Random-Effects Meta-Analysis"
+description: >
+  Pool effect sizes from multiple studies addressing the same
+  question. Uses DerSimonian-Laird random-effects model.
+  Minimum 3 studies required.
+
+input:
+  question:
+    description: "The specific question being pooled (maps to a hypothesis or RQ)"
+    required: true
+  inclusion_criteria:
+    description: "Study design, population, exposure, outcome filters"
+    required: true
+  studies:
+    description: "List of study IDs from knowledge/studies/"
+    required: true
+    min_count: 3
+
+steps:
+  1_screen:
+    action: "Verify all included studies meet inclusion criteria"
+    output: "screening_log.yaml"
+    checks:
+      - "Each study meets specified design criteria"
+      - "Outcomes are comparable (same construct, similar measures)"
+      - "No overlapping samples across studies"
+      - "All effect sizes are available or calculable"
+
+  2_extract_effects:
+    action: "Compile effect sizes and variances from included studies"
+    output: "pooled_input.csv"
+    format: "study_id, hedges_g, se, n_treatment, n_control, year, quality_score"
+
+  3_pool:
+    action: "Run random-effects meta-analysis"
+    command: "python tools/meta_pool.py --input pooled_input.csv --method dsl"
+    output: "meta_results.yaml"
+    required_outputs:
+      - pooled_effect: "Hedges' g with 95% CI"
+      - heterogeneity: "I², Q statistic, tau²"
+      - z_test: "Z value and p-value for pooled effect"
+      - prediction_interval: "95% prediction interval"
+
+  4_visualize:
+    action: "Generate forest and funnel plots"
+    commands:
+      - "python tools/forest_plot.py --input pooled_input.csv --output results/forest_plot.png --title '{question}'"
+      - "python tools/funnel_plot.py --input pooled_input.csv --output results/funnel_plot.png"
+    outputs:
+      - "results/forest_plot.png"
+      - "results/funnel_plot.png"
+
+  5_bias_assessment:
+    action: "Assess publication bias and sensitivity"
+    checks:
+      - "Visual inspection of funnel plot asymmetry"
+      - "If ≥10 studies: Egger's test for small-study effects"
+      - "Leave-one-out sensitivity analysis"
+      - "Quality-stratified subgroup analysis (high vs low quality)"
+    output: "bias_assessment.md"
+
+  6_interpret:
+    action: "Write analysis interpreting results"
+    output: "analysis.md"
+    required_content:
+      - "Plain-language summary of pooled effect"
+      - "Heterogeneity interpretation (low <25%, moderate 25-75%, high >75%)"
+      - "Sources of heterogeneity if I² > 50%"
+      - "Publication bias assessment"
+      - "Confidence in the finding (GRADE-like assessment)"
+      - "Limitations and caveats"
+      - "Implications for open hypotheses"
+
+  7_record:
+    action: "Update lab knowledge"
+    update_files:
+      - "knowledge/findings.yaml — add new finding with evidence links"
+      - "knowledge/hypotheses.yaml — update relevant hypothesis status"
+      - "experiment status.yaml → done"

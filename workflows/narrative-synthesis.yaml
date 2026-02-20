@@ -1,0 +1,58 @@
+name: "Narrative Synthesis"
+description: >
+  Synthesize qualitative and mixed-method findings across studies
+  that cannot be pooled quantitatively. Produces a structured
+  thematic summary of mechanisms, experiences, or contextual factors.
+
+input:
+  theme:
+    description: "The thematic question to synthesize"
+    required: true
+    examples:
+      - "What mechanisms do participants report for nature's therapeutic effect?"
+      - "How do cultural contexts shape nature therapy practices?"
+      - "What barriers prevent nature therapy adherence?"
+  studies:
+    description: "Study IDs to include"
+    required: true
+    min_count: 3
+
+steps:
+  1_extract_themes:
+    action: "Extract relevant themes, quotes, and findings from each study"
+    output: "thematic_extracts.yaml"
+    per_study:
+      - study_id
+      - relevant_findings
+      - key_quotes_or_descriptions
+      - context_notes
+      - methodology_used
+
+  2_code:
+    action: "Identify recurring codes and group into themes"
+    output: "coding_framework.yaml"
+    structure:
+      - theme_name
+      - definition
+      - supporting_studies
+      - illustrative_examples
+      - counter_examples_or_nuances
+
+  3_synthesize:
+    action: "Write narrative synthesis"
+    output: "analysis.md"
+    required_content:
+      - "Overview of included studies and their approaches"
+      - "Thematic map (which themes emerged and how they relate)"
+      - "Theme-by-theme synthesis with supporting evidence"
+      - "Areas of convergence across studies"
+      - "Areas of divergence or contradiction"
+      - "Gaps in current understanding"
+      - "Implications for quantitative hypotheses"
+
+  4_record:
+    action: "Update lab knowledge"
+    update_files:
+      - "knowledge/findings.yaml"
+      - "knowledge/hypotheses.yaml — any new hypotheses generated"
+      - "experiment status.yaml → done"

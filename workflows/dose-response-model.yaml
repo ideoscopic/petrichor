@@ -1,0 +1,73 @@
+name: "Dose-Response Model"
+description: >
+  Model the relationship between nature exposure dose (minutes/week,
+  frequency, duration) and health outcome magnitude. Fits multiple
+  functional forms and selects best fit.
+
+input:
+  outcome:
+    description: "The outcome domain to model (depression, anxiety, stress, etc.)"
+    required: true
+  dose_metric:
+    description: "The dose metric to use (minutes_per_week, minutes_per_session, sessions_per_week)"
+    required: true
+  studies:
+    description: "Study IDs with extractable dose-response data"
+    required: true
+    min_count: 5
+
+steps:
+  1_compile:
+    action: "Extract dose-response data points from included studies"
+    output: "dose_response_data.csv"
+    format: "study_id, dose_value, effect_size, se, n, population_type"
+    notes: >
+      Each study may contribute multiple data points if it tested
+      multiple dose levels. Single-dose studies contribute one point
+      (dose vs no-exposure control).
+
+  2_fit_models:
+    action: "Fit candidate dose-response functions"
+    command: "python tools/dose_response.py --input dose_response_data.csv --models linear,log,spline,threshold"
+    output: "model_fits.yaml"
+    models:
+      linear: "g = β₀ + β₁·dose"
+      logarithmic: "g = β₀ + β₁·ln(dose)"
+      restricted_cubic_spline: "g = f(dose) with 3 knots"
+      threshold: "g = β₀ if dose < τ, β₀ + β₁·(dose - τ) if dose ≥ τ"
+    comparison: "AIC, BIC, cross-validated RMSE"
+
+  3_visualize:
+    action: "Plot dose-response curves with data points"
+    output: "results/dose_response_plot.png"
+    required_elements:
+      - "Individual study data points (sized by precision)"
+      - "Best-fit curve with 95% CI band"
+      - "Clinically meaningful threshold line (g = 0.5)"
+      - "Axis labels with units"
+
+  4_identify_thresholds:
+    action: "Identify clinically relevant dose thresholds"
+    output: "thresholds.yaml"
+    questions:
+      - "At what dose does the effect first become statistically significant?"
+      - "At what dose does the effect reach clinically meaningful size (g ≥ 0.5)?"
+      - "Is there a saturation point beyond which more exposure adds little benefit?"
+      - "What is the minimum effective dose (MED) estimate with 95% CI?"
+
+  5_analyze:
+    action: "Write interpretation"
+    output: "analysis.md"
+    required_content:
+      - "Best fitting model and rationale"
+      - "Minimum effective dose estimate"
+      - "Saturation point if identified"
+      - "Comparison with White et al. (2019) 120-minute threshold"
+      - "Limitations (ecological bias, confounders, measurement heterogeneity)"
+
+  6_record:
+    action: "Update lab knowledge"
+    update_files:
+      - "knowledge/findings.yaml"
+      - "knowledge/hypotheses.yaml"
+      - "experiment status.yaml → done"

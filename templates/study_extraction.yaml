@@ -1,0 +1,67 @@
+# Template: Study Data Extraction
+# Copy this template to experiments/<NNN>-<name>/extracted_data.yaml
+# and fill in all fields from the source paper.
+
+study_info:
+  authors: ""          # Last names, e.g. "Smith, Jones, Lee"
+  year: null           # Publication year
+  title: ""
+  journal: ""
+  doi: ""              # e.g. "10.1038/s41598-019-44097-3"
+  pmid: null           # PubMed ID if available
+  country: ""
+  study_design: ""     # RCT | quasi-experimental | crossover | cohort | cross-sectional
+
+population:
+  n_total: null
+  n_treatment: null
+  n_control: null
+  age_mean: null
+  age_sd: null
+  percent_female: null
+  clinical_status: ""  # clinical | subclinical | healthy
+  clinical_condition: "" # depression | anxiety | stress | PTSD | mixed | none
+  inclusion_criteria: ""
+  exclusion_criteria: ""
+
+exposure:
+  type: ""             # forest | park | garden | waterfront | wilderness | mixed
+  activity: ""         # walking | sitting | gardening | exercising | mixed
+  description: ""      # Brief description of the intervention
+  duration_minutes_per_session: null
+  frequency_sessions_per_week: null
+  total_weeks: null
+  total_dose_minutes: null  # Calculated: duration * frequency * weeks
+
+control:
+  type: ""             # waitlist | active-urban | active-indoor | usual-care
+  description: ""
+
+outcomes:
+  # Repeat this block for each outcome measure reported
+  - measure_name: ""   # e.g. "PHQ-9", "GAD-7", "salivary cortisol"
+    outcome_domain: ""  # depression | anxiety | stress | cognitive | biomarker | wellbeing
+    timing: ""          # e.g. "pre-post" or "pre, post, 4-week follow-up"
+    pre_mean_treatment: null
+    pre_sd_treatment: null
+    post_mean_treatment: null
+    post_sd_treatment: null
+    pre_mean_control: null
+    pre_sd_control: null
+    post_mean_control: null
+    post_sd_control: null
+    effect_size_reported: null  # If authors report an effect size
+    effect_size_type: ""        # "Cohen's d" | "Hedges' g" | "eta-squared" | etc.
+    p_value: null
+    notes: ""
+
+quality_assessment:
+  randomization: ""          # low | some_concerns | high
+  allocation_concealment: "" # low | some_concerns | high
+  blinding_outcome: ""       # low | some_concerns | high
+  incomplete_data: ""        # low | some_concerns | high
+  selective_reporting: ""    # low | some_concerns | high
+  measurement_validity: ""   # low | some_concerns | high
+  confounders: ""            # low | some_concerns | high
+
+extraction_notes: ""  # Any issues, concerns, or clarifications about the extraction

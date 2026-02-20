@@ -1,0 +1,24 @@
+changes:
+  - id: C001
+    date: "2025-01-01"
+    type: "lab_initialized"
+    target: "all"
+    proposed_by: "human:founder"
+    approved_by: "human:founder"
+    rationale: >
+      Initial lab setup with 6 workflows (literature-extraction, meta-analysis,
+      dose-response-model, moderator-analysis, study-design, narrative-synthesis),
+      7 tools (effect_size, meta_pool, forest_plot, funnel_plot, dose_response,
+      quality_score, prisma_flow), and seed knowledge from foundational papers.
+    pr: null
+
+# Future changes are recorded here as the lab evolves.
+# Format:
+#   - id: C002
+#     date: "YYYY-MM-DD"
+#     type: workflow_added | workflow_modified | tool_added | tool_modified | rule_changed
+#     target: "path/to/changed/file"
+#     proposed_by: "claude-code-agent-X" or "human:name"
+#     approved_by: "human:name"
+#     rationale: "Why this change was needed"
+#     pr: "#42"

@@ -1,0 +1,89 @@
+name: "Literature Data Extraction"
+description: >
+  Extract structured quantitative data from a published study into
+  the lab's knowledge base. This is the fundamental unit of data
+  collection for all downstream analyses.
+
+input:
+  paper:
+    description: "DOI or PMID of the study to extract"
+    required: true
+  full_text_available:
+    description: "Whether full text PDF is accessible"
+    type: boolean
+    required: true
+
+steps:
+  1_locate:
+    action: "Retrieve paper metadata and abstract (full text if available)"
+    output: "paper_metadata.yaml"
+    checks:
+      - "Paper is a primary study (not a review or commentary)"
+      - "Paper reports quantitative outcomes relevant to nature-health"
+      - "Paper is not already in knowledge/studies/"
+
+  2_quality_assess:
+    action: "Score study quality using tools/quality_score.py"
+    command: "python tools/quality_score.py --input paper_metadata.yaml"
+    output: "quality_assessment.yaml"
+    criteria:
+      - randomization: "Was allocation randomized?"
+      - blinding: "Were outcome assessors blinded?"
+      - attrition: "Was attrition < 20% and balanced?"
+      - measurement: "Were validated instruments used?"
+      - confounders: "Were key confounders controlled?"
+      - sample_size: "N per group"
+
+  3_extract_data:
+    action: "Extract structured data into standard format"
+    output: "extracted_data.yaml"
+    required_fields:
+      study_info:
+        - authors
+        - year
+        - doi
+        - country
+        - study_design  # RCT | quasi-experimental | cohort | cross-sectional
+      population:
+        - n_total
+        - n_per_group
+        - age_mean
+        - age_sd
+        - percent_female
+        - clinical_status  # clinical | subclinical | healthy
+        - clinical_condition  # depression | anxiety | stress | mixed | none
+      exposure:
+        - type  # forest | park | garden | waterfront | wilderness | mixed
+        - activity  # walking | sitting | gardening | exercising | mixed
+        - duration_minutes_per_session
+        - frequency_sessions_per_week
+        - total_weeks
+        - total_dose_minutes
+      outcomes:
+        - measure_name  # PHQ-9, GAD-7, cortisol, etc.
+        - outcome_domain  # depression | anxiety | stress | cognitive | biomarker | wellbeing
+        - pre_mean_treatment
+        - pre_sd_treatment
+        - post_mean_treatment
+        - post_sd_treatment
+        - pre_mean_control
+        - pre_sd_control
+        - post_mean_control
+        - post_sd_control
+        - effect_size_reported  # if authors report one
+        - p_value
+
+  4_calculate_effects:
+    action: "Calculate standardized effect sizes"
+    command: "python tools/effect_size.py --input extracted_data.yaml"
+    output: "effect_sizes.yaml"
+    notes: >
+      Calculate Hedges' g for each outcome. If only p-values and N
+      are available, estimate effect size from test statistics.
+
+  5_record:
+    action: "Add study to knowledge base"
+    update_files:
+      - "knowledge/studies/<first_author>_<year>.yaml"
+      - "analysis.md with extraction notes and any concerns"
+    status: "done"

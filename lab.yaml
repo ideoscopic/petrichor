@@ -1,0 +1,85 @@
+name: "Petrichor"
+domain: "nature therapy / ecotherapy / environmental health psychology"
+methodology: "computational-synthesis"
+primary_tools:
+  - "meta-analysis"
+  - "statistical modeling"
+  - "systematic review"
+  - "experimental design"
+
+mission: >
+  Investigate the dose-response relationship between nature exposure
+  and mental health outcomes. Identify minimum effective doses, optimal
+  exposure types, biological mechanisms, and population-specific effects
+  through systematic synthesis of existing research.
+
+research_questions:
+  - id: RQ1
+    question: "What is the minimum weekly nature dose for clinically meaningful improvement in depression/anxiety?"
+    status: open
+    priority: high
+
+  - id: RQ2
+    question: "Does environment type (forest vs park vs waterfront) moderate therapeutic effect?"
+    status: open
+    priority: high
+
+  - id: RQ3
+    question: "What biological pathways mediate nature-health effects (cortisol, HRV, immune markers)?"
+    status: open
+    priority: medium
+
+  - id: RQ4
+    question: "Are effects stronger for clinical vs non-clinical populations?"
+    status: open
+    priority: medium
+
+  - id: RQ5
+    question: "Does nature exposure have differential effects across age groups?"
+    status: open
+    priority: low
+
+  - id: RQ6
+    question: "What is the temporal dynamics of nature therapy effects (onset, duration, decay)?"
+    status: open
+    priority: medium
+
+constraints:
+  max_concurrent_experiments: 10
+  require_review_before_merge: true
+  min_reviewers: 1
+  effect_size_standard: "hedges_g"
+  confidence_level: 0.95
+  minimum_studies_for_meta: 3
+
+evolution:
+  # What agents can merge with peer review only
+  agent_reviewable:
+    - "experiments/**"
+    - "knowledge/**"
+    - "reviews/**"
+
+  # What requires human approval to merge
+  human_gated:
+    - "workflows/**"
+    - "tools/**"
+    - "templates/**"
+    - "CLAUDE.md"
+    - "lab.yaml"
+
+  # Allowed tool dependencies (keep lightweight)
+  allowed_dependencies:
+    - "python stdlib"
+    - "numpy"
+    - "matplotlib"
+    - "scipy"
+    - "pyyaml"
+    - "pandas"
+
+priority:
+  - "Refute or support an existing hypothesis with data"
+  - "Analyze completed but unanalyzed experiments"
+  - "Review unreviewed experiments"
+  - "Extract data from high-quality studies not yet in knowledge base"
+  - "Generate new hypotheses from accumulated findings"
+  - "Design studies to test high-priority open hypotheses"

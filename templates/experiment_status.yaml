@@ -1,0 +1,11 @@
+# Template: Experiment Status
+# Copy this template to experiments/<NNN>-<name>/status.yaml
+
+status: pending        # pending | in_progress | done | failed | under_review
+agent: ""              # Agent identifier (e.g. "claude-code-user-alice")
+started: null          # ISO 8601 timestamp
+completed: null        # ISO 8601 timestamp
+workflow: ""           # Workflow used (e.g. "literature-extraction")
+hypothesis_ref: ""     # Hypothesis ID being tested (e.g. "H001")
+outcome: ""            # supports | refutes | inconclusive | N/A
+summary: ""            # One-line summary of result

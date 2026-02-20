@@ -1,0 +1,25 @@
+{
+  "name": "petrichor",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prebuild": "node prebuild.js",
+    "dev": "node prebuild.js && vite dev",
+    "build": "node prebuild.js && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-vercel": "^5.7.0",
+    "@sveltejs/kit": "^2.21.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "svelte": "^5.28.0",
+    "typescript": "^5.8.0",
+    "vite": "^6.3.0"
+  },
+  "dependencies": {
+    "@sveltejs/adapter-static": "^3.0.10",
+    "marked": "^15.0.0",
+    "yaml": "^2.7.0"
+  },
+  "type": "module"
+}

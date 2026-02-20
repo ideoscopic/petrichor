@@ -1,0 +1,10 @@
+# Template: Human Feedback
+# Copy to feedback/<NNN>-<your-name>.yaml
+
+from: ""                   # Your name or identifier
+date: ""                   # ISO 8601 date
+type: ""                   # domain_expertise | priority_shift | methodology_concern | observation
+regarding: ""              # Hypothesis, finding, experiment, or workflow ID
+comment: ""                # Your feedback — be specific and cite sources if possible
+actionable: false          # true if this requires agent action
+suggested_action: ""       # What should agents do with this feedback?

@@ -1,0 +1,36 @@
+findings:
+  - id: F001
+    date: "2025-01-01"
+    statement: >
+      A threshold of approximately 120 minutes per week of nature
+      contact is associated with significantly higher levels of
+      health and wellbeing compared to no nature contact.
+    source: "White et al. (2019) Scientific Reports. DOI:10.1038/s41598-019-44097-3"
+    evidence_type: "cross-sectional survey (N=19,806)"
+    confidence: "moderate"
+    limitations: "Cross-sectional design, self-reported exposure and outcomes"
+    needs: "Replication with prospective data and objective exposure measures"
+
+  - id: F002
+    date: "2025-01-01"
+    statement: >
+      Forest bathing (shinrin-yoku) increases NK cell activity
+      and intracellular anti-cancer proteins, with effects
+      lasting more than 7 days after a forest visit.
+    source: "Li (2010) Environ Health Prev Med. DOI:10.1007/s12199-009-0086-9"
+    evidence_type: "controlled field study"
+    confidence: "moderate"
+    limitations: "Small samples, mostly Japanese male participants, no long-term follow-up"
+    needs: "Replication in diverse populations, dose-response characterization"
+
+  - id: F003
+    date: "2025-01-01"
+    statement: >
+      Nature exposure reduces rumination and neural activity in
+      subgenual prefrontal cortex, a brain region associated with
+      depression risk.
+    source: "Bratman et al. (2015) PNAS. DOI:10.1073/pnas.1510459112"
+    evidence_type: "RCT with neuroimaging (N=38)"
+    confidence: "moderate"
+    limitations: "Small sample, single 90-min walk, healthy participants only"
+    needs: "Replication with clinical populations, longer exposure periods"

@@ -1,0 +1,79 @@
+hypotheses:
+  - id: H001
+    status: open
+    statement: >
+      The minimum effective dose of nature exposure for clinically
+      meaningful reduction in depression symptoms (PHQ-9 ≥ 5 point
+      decrease) is between 60-120 minutes per week.
+    rationale: >
+      White et al. (2019) found a 120-min threshold for general wellbeing
+      in a cross-sectional study, but clinical populations may respond
+      at lower doses. The dose-response shape below 120 min is unknown.
+    priority: high
+    related_rq: RQ1
+    suggested_experiments:
+      - "Meta-analysis of studies reporting nature dose and depression outcomes"
+      - "Dose-response model across available data points"
+
+  - id: H002
+    status: open
+    statement: >
+      Forest environments produce larger anxiolytic effects than
+      urban parks, controlling for activity type and duration.
+    rationale: >
+      Forest bathing literature reports large effects, but studies rarely
+      compare forest vs park directly. Phytoncides, biodiversity, and
+      canopy cover may be active ingredients present in forests but not parks.
+    priority: high
+    related_rq: RQ2
+    suggested_experiments:
+      - "Moderator analysis: environment type on anxiety outcomes"
+      - "Narrative synthesis of proposed mechanisms by environment type"
+
+  - id: H003
+    status: open
+    statement: >
+      Salivary cortisol mediates the relationship between nature
+      exposure and self-reported stress reduction, with cortisol
+      changes detectable within 20 minutes of exposure.
+    rationale: >
+      Multiple studies measure both cortisol and subjective stress, but
+      formal mediation analyses are rare. If cortisol is a mediator,
+      it provides both a biological mechanism and an objective outcome measure.
+    priority: medium
+    related_rq: RQ3
+    suggested_experiments:
+      - "Extract cortisol + subjective stress data from available studies"
+      - "Meta-analysis of cortisol response to nature exposure"
+
+  - id: H004
+    status: open
+    statement: >
+      Nature therapy effects are significantly larger for individuals
+      with clinical-level anxiety or depression compared to healthy
+      populations (moderating effect of baseline severity).
+    rationale: >
+      Floor effects may limit measurable improvement in healthy populations.
+      Clinical populations have more room for improvement and may derive
+      greater benefit. This has implications for targeted prescription.
+    priority: medium
+    related_rq: RQ4
+    suggested_experiments:
+      - "Moderator analysis: clinical vs healthy population"
+      - "Collect baseline severity data from included studies"
+
+  - id: H005
+    status: open
+    statement: >
+      The therapeutic benefits of nature exposure decay with a
+      half-life of approximately 3-7 days, requiring regular
+      re-exposure for sustained effects.
+    rationale: >
+      Li (2010) showed NK cell effects lasting 7+ days. Cortisol studies
+      show immediate effects. The temporal dynamics between acute response
+      and sustained benefit are poorly characterized.
+    priority: medium
+    related_rq: RQ6
+    suggested_experiments:
+      - "Extract follow-up timepoint data from longitudinal studies"
+      - "Narrative synthesis of effect duration findings"

@@ -1,0 +1,87 @@
+name: "Study Protocol Design"
+description: >
+  Design a rigorous study protocol to test an open hypothesis.
+  Outputs a pre-registration-ready protocol document.
+  Does NOT execute the study — produces a blueprint for human researchers.
+
+input:
+  hypothesis:
+    description: "Hypothesis ID from knowledge/hypotheses.yaml"
+    required: true
+  study_type:
+    description: "RCT | crossover | cohort | quasi-experimental"
+    required: true
+    default: "RCT"
+
+steps:
+  1_review_prior:
+    action: "Review all evidence for and against the hypothesis"
+    output: "prior_evidence_summary.md"
+    sources:
+      - "knowledge/findings.yaml"
+      - "knowledge/studies/ related to this hypothesis"
+      - "knowledge/dead_ends.yaml for relevant failures"
+
+  2_define_design:
+    action: "Specify study design elements"
+    output: "study_design.yaml"
+    required_elements:
+      population:
+        - inclusion_criteria
+        - exclusion_criteria
+        - target_n_per_group
+        - recruitment_strategy
+      intervention:
+        - nature_type
+        - duration_per_session
+        - frequency
+        - total_duration_weeks
+        - specific_protocol_description
+      control:
+        - type  # waitlist | active-urban | active-indoor | usual-care
+        - description
+      outcomes:
+        primary:
+          - measure_name
+          - instrument
+          - timing  # pre, post, follow-up weeks
+        secondary:
+          - measure_name
+          - instrument
+          - timing
+      randomization:
+        - method
+        - stratification_variables
+      blinding:
+        - assessor_blinded
+        - participant_blinding_possible
+        - rationale_if_not_blinded
+
+  3_power_analysis:
+    action: "Calculate required sample size"
+    output: "power_analysis.yaml"
+    parameters:
+      - "Expected effect size (from meta-analysis or prior studies)"
+      - "Alpha = 0.05 (two-tailed)"
+      - "Power = 0.80"
+      - "Expected attrition rate"
+      - "Final N per group needed"
+
+  4_write_protocol:
+    action: "Write full study protocol"
+    output: "protocol.md"
+    structure:
+      - "Title and registration plan"
+      - "Background and rationale (citing lab findings)"
+      - "Objectives and hypotheses"
+      - "Methods (design, participants, intervention, outcomes, analysis plan)"
+      - "Statistical analysis plan (ITT primary, per-protocol secondary)"
+      - "Ethical considerations"
+      - "Timeline and milestones"
+      - "Expected contribution to lab research questions"
+
+  5_record:
+    action: "Update lab knowledge"
+    update_files:
+      - "knowledge/hypotheses.yaml — mark hypothesis as 'protocol designed'"
+      - "experiment status.yaml → done"

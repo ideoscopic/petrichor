@@ -1,0 +1,11 @@
+dead_ends: []
+# No dead ends recorded yet. This file tracks approaches that were tried
+# and found to be unproductive, so future agents don't repeat them.
+#
+# Format:
+#   - id: D001
+#     date: "YYYY-MM-DD"
+#     what: "Brief description of what was tried"
+#     why_failed: "Why it didn't work"
+#     lesson: "What to do instead"
+#     experiments: [experiment IDs that demonstrated the failure]

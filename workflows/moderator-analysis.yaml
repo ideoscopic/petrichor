@@ -1,0 +1,74 @@
+name: "Moderator Analysis"
+description: >
+  Test whether a candidate variable moderates the effect of nature
+  exposure on health outcomes. Uses subgroup analysis or
+  meta-regression depending on moderator type.
+
+input:
+  moderator:
+    description: "Variable to test as moderator"
+    required: true
+    examples:
+      - "environment_type (forest vs park vs waterfront)"
+      - "population_type (clinical vs healthy)"
+      - "age_group (children vs adults vs elderly)"
+      - "activity_type (walking vs sitting vs gardening)"
+      - "study_quality (high vs low risk of bias)"
+  outcome:
+    description: "Outcome domain to analyze"
+    required: true
+  studies:
+    description: "Study IDs from knowledge/studies/"
+    required: true
+    min_count: 6
+
+steps:
+  1_categorize:
+    action: "Classify studies by moderator levels"
+    output: "moderator_groups.yaml"
+    checks:
+      - "Each subgroup has ≥ 3 studies"
+      - "Moderator levels are clearly defined and non-overlapping"
+      - "Studies can be unambiguously assigned to one level"
+
+  2_subgroup_analysis:
+    action: "Run separate meta-analyses per subgroup"
+    command: "python tools/meta_pool.py --input {subgroup_data} --method dsl"
+    output: "subgroup_results.yaml"
+    per_subgroup:
+      - pooled_effect_with_ci
+      - heterogeneity_i2
+      - n_studies
+
+  3_test_moderation:
+    action: "Test whether subgroups differ significantly"
+    output: "moderation_test.yaml"
+    methods:
+      categorical: "Q-between test (chi-square test of subgroup differences)"
+      continuous: "Random-effects meta-regression with moderator as predictor"
+    report:
+      - "Q-between statistic and p-value"
+      - "Effect size per subgroup with 95% CI"
+      - "Overlap of confidence intervals"
+
+  4_visualize:
+    action: "Generate grouped forest plot"
+    command: "python tools/forest_plot.py --input subgroup_results.yaml --grouped --output results/moderator_plot.png"
+    output: "results/moderator_plot.png"
+
+  5_analyze:
+    action: "Write interpretation"
+    output: "analysis.md"
+    required_content:
+      - "Does the moderator significantly affect the treatment effect?"
+      - "Which subgroup shows the strongest effect?"
+      - "Clinical interpretation (who benefits most?)"
+      - "Caveats (ecological fallacy, confounding between moderators)"
+      - "Implications for targeted nature prescriptions"
+
+  6_record:
+    action: "Update lab knowledge"
+    update_files:
+      - "knowledge/findings.yaml"
+      - "knowledge/hypotheses.yaml"
+      - "experiment status.yaml → done"
