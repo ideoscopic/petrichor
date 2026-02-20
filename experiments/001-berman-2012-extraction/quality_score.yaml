@@ -1,0 +1,30 @@
+overall_risk_of_bias: high
+quality_score: 2.3
+max_score: 3.0
+domain_count: 7
+domains:
+  randomization:
+    judgment: low
+    question: Was the allocation sequence random?
+  allocation_concealment:
+    judgment: some_concerns
+    question: Was allocation concealed from those enrolling participants?
+  blinding_outcome:
+    judgment: high
+    question: Were outcome assessors blinded to group assignment?
+  incomplete_data:
+    judgment: some_concerns
+    question: Were incomplete outcome data adequately addressed?
+  selective_reporting:
+    judgment: some_concerns
+    question: Are reports of the study free of selective outcome reporting?
+  measurement_validity:
+    judgment: low
+    question: Were validated measurement instruments used?
+  confounders:
+    judgment: low
+    question: Were important confounders controlled?
+summary:
+  low_risk_domains: 3
+  some_concerns_domains: 3
+  high_risk_domains: 1

@@ -1,0 +1,124 @@
+study_info:
+  authors: "Berman, Kross, Krpan, Askren, Burson, Deldin, Kaplan, Sherdell, Gotlib, Jonides"
+  year: 2012
+  title: "Interacting with nature improves cognition and affect for individuals with depression"
+  journal: "Journal of Affective Disorders"
+  doi: "10.1016/j.jad.2012.03.012"
+  pmid: 22464936
+  country: "United States"
+  study_design: "crossover"  # within-subjects counterbalanced
+
+population:
+  n_total: 20
+  n_per_group: 20  # same participants in both conditions (crossover)
+  n_treatment: 20
+  n_control: 20
+  age_mean: 26
+  age_sd: null  # not reported
+  percent_female: 60
+  clinical_status: "clinical"
+  clinical_condition: "depression"
+  inclusion_criteria: "Diagnosed with major depressive disorder (MDD)"
+  exclusion_criteria: "Not specified in detail"
+  baseline_severity: "BDI-II M=30.1, SD=10.8 (moderate to severe)"
+  comorbidity_note: "12/20 had comorbid diagnoses; 6/20 on depression medication"
+
+exposure:
+  type: "park"  # Ann Arbor Arboretum — a large botanical garden/arboretum
+  activity: "walking"
+  description: "50-55 minute walk (2.8 miles) through Ann Arbor Arboretum. Participants were instructed to think about a painful autobiographical experience before the walk to prime rumination."
+  duration_minutes_per_session: 50
+  frequency_sessions_per_week: null  # single session crossover, 1 week between conditions
+  total_weeks: null  # single session
+  total_dose_minutes: 50  # single session
+
+control:
+  type: "active-urban"
+  description: "50-55 minute walk (2.8 miles) through downtown Ann Arbor (urban commercial area). Same rumination induction prior to walk."
+
+outcomes:
+  - measure_name: "Backward Digit Span (BDS)"
+    outcome_domain: "cognitive"
+    timing: "pre-post (within session)"
+    pre_mean_treatment: 7.42
+    pre_sd_treatment: 3.00
+    post_mean_treatment: 8.63
+    post_sd_treatment: 2.87
+    pre_mean_control: 8.26
+    pre_sd_control: 2.51
+    post_mean_control: 7.84
+    post_sd_control: 2.24
+    effect_size_reported: 0.53
+    effect_size_type: "partial eta-squared"
+    p_value: 0.001
+    notes: "N=19 with complete data. Interaction F(1,18)=20.5, p<.001. Nature improved memory; urban slightly worsened it."
+
+  - measure_name: "PANAS Positive Affect"
+    outcome_domain: "wellbeing"
+    timing: "pre-induction to post-walk"
+    pre_mean_treatment: 2.11
+    pre_sd_treatment: 0.82
+    post_mean_treatment: 2.62
+    post_sd_treatment: 1.03
+    pre_mean_control: 1.92
+    pre_sd_control: 0.62
+    post_mean_control: 2.26
+    post_sd_control: 0.89
+    effect_size_reported: 0.29
+    effect_size_type: "partial eta-squared"
+    p_value: 0.05
+    notes: "N=17 with complete data. Interaction F(1,16)=6.62, p<.05. Both conditions improved PA, but nature improved significantly more."
+
+  - measure_name: "PANAS Negative Affect"
+    outcome_domain: "stress"
+    timing: "pre-induction to post-walk"
+    pre_mean_treatment: 2.04
+    pre_sd_treatment: 0.84
+    post_mean_treatment: 1.53
+    post_sd_treatment: 0.86
+    pre_mean_control: 2.03
+    pre_sd_control: 0.88
+    post_mean_control: 1.64
+    post_sd_control: 0.92
+    effect_size_reported: null
+    effect_size_type: ""
+    p_value: null
+    notes: "N=17-19 (varies). No significant location x time interaction F(1,15)=0.13, n.s. Both conditions reduced NA significantly."
+
+  - measure_name: "Rumination during walk"
+    outcome_domain: "cognitive"
+    timing: "post-walk only"
+    pre_mean_treatment: null
+    pre_sd_treatment: null
+    post_mean_treatment: 1.16
+    post_sd_treatment: 0.60
+    pre_mean_control: null
+    pre_sd_control: null
+    post_mean_control: 1.21
+    post_sd_control: 0.42
+    effect_size_reported: null
+    effect_size_type: ""
+    p_value: 0.72
+    notes: "N=19. No significant difference in self-reported rumination during walks. t(18)=0.37, p>.72."
+
+quality_assessment:
+  randomization: "low"           # Counterbalanced crossover (order randomized)
+  allocation_concealment: "some_concerns"  # Allocation method for order not described in detail
+  blinding_outcome: "high"       # Participants not blinded to walk location; self-report outcomes
+  incomplete_data: "some_concerns"  # 1/20 excluded for BDS; some PANAS data missing (17-19 of 20)
+  selective_reporting: "some_concerns"   # No pre-registration mentioned; all expected outcomes appear reported
+  measurement_validity: "low"    # PANAS and BDS are validated instruments
+  confounders: "low"             # Crossover design controls individual differences; order counterbalanced
+
+extraction_notes: >
+  This is a within-subjects crossover design, not a parallel-group RCT.
+  The same 20 participants completed both nature and urban walks one week apart,
+  with order counterbalanced. Effect sizes computed treating conditions as
+  independent groups will UNDERESTIMATE precision (ignore within-subject
+  correlation) but the point estimate of the standardized mean difference
+  remains interpretable. The partial eta-squared values reported by the
+  authors account for the within-subjects design and are more precise.
+  The rumination induction before walks is an unusual methodological feature
+  that may inflate baseline negative affect, potentially providing more
+  room for improvement compared to studies without mood induction.
+  BDI-II mean of 30.1 indicates a moderate-to-severely depressed sample.

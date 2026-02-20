@@ -1,0 +1,38 @@
+outcomes:
+- ci_lower: -0.055
+  ci_upper: 1.2102
+  cohens_d: 0.5893
+  domain: cognitive
+  hedges_g: 0.5776
+  measure: Backward Digit Span (BDS)
+  n_control: 20
+  n_treatment: 20
+  se: 0.3228
+- ci_lower: -0.3926
+  ci_upper: 0.8511
+  cohens_d: 0.2339
+  domain: wellbeing
+  hedges_g: 0.2292
+  measure: PANAS Positive Affect
+  n_control: 20
+  n_treatment: 20
+  se: 0.3173
+- ci_lower: -0.7573
+  ci_upper: 0.4838
+  cohens_d: -0.1395
+  domain: stress
+  hedges_g: -0.1367
+  measure: PANAS Negative Affect
+  n_control: 20
+  n_treatment: 20
+  se: 0.3166
+- ci_lower: -0.7148
+  ci_upper: 0.5255
+  cohens_d: -0.0965
+  domain: cognitive
+  hedges_g: -0.0946
+  measure: Rumination during walk
+  n_control: 20
+  n_treatment: 20
+  se: 0.3164
+study_id: 10.1016/j.jad.2012.03.012
