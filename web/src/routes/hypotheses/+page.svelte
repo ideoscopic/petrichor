@@ -8,26 +8,37 @@
 		const pOrder: Record<string, number> = { high: 0, medium: 1, low: 2 };
 		return (pOrder[a.priority ?? 'low'] ?? 9) - (pOrder[b.priority ?? 'low'] ?? 9);
 	});
+
+	const openCount = data.hypotheses.filter(h => h.status === 'open').length;
+	const needsInputCount = data.hypotheses.filter(h => h.status === 'open' && h.priority === 'high').length;
 </script>
 
 <svelte:head><title>Hypotheses</title></svelte:head>
 
 <h1>Hypotheses</h1>
-<p class="text-muted mb-1">{data.hypotheses.length} total &middot; {data.hypotheses.filter(h => h.status === 'open').length} open</p>
+<p class="text-muted mb-1">
+	{data.hypotheses.length} total &middot; {openCount} open
+	{#if needsInputCount > 0}
+		&middot; <span style="color: var(--orange);">{needsInputCount} need input</span>
+	{/if}
+</p>
 
 <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 12px;">
 	{#each sorted as hyp}
-		<div class="card">
+		<div class="card" class:needs-action={hyp.status === 'open' && hyp.priority === 'high'}>
 			<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-				<span class="mono" style="color: var(--accent); font-size: 15px;">{hyp.id}</span>
-				<div style="display: flex; gap: 8px;">
+				<span class="mono" style="color: var(--blue); font-size: 15px;">{hyp.id}</span>
+				<div style="display: flex; gap: 6px;">
 					{#if hyp.priority}
 						<span class="badge {hyp.priority}">{hyp.priority}</span>
 					{/if}
 					<span class="badge {hyp.status}">{hyp.status}</span>
+					{#if hyp.status === 'open' && hyp.priority === 'high'}
+						<span class="badge needs-input">needs input</span>
+					{/if}
 				</div>
 			</div>
-			<p style="font-size: 15px; margin-bottom: 8px;">{hyp.statement}</p>
+			<p style="font-size: 15px; margin-bottom: 8px; color: var(--text-secondary);">{hyp.statement}</p>
 			{#if hyp.rationale}
 				<p class="text-muted text-sm">{hyp.rationale}</p>
 			{/if}
@@ -36,7 +47,7 @@
 					<span class="text-sm text-muted">Suggested experiments:</span>
 					<ul style="margin-left: 20px; margin-top: 4px;">
 						{#each hyp.suggested_experiments as exp}
-							<li class="text-sm">{exp}</li>
+							<li class="text-sm" style="color: var(--text-secondary);">{exp}</li>
 						{/each}
 					</ul>
 				</div>

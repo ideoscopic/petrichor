@@ -44,7 +44,10 @@ suggested_action: ${suggestedAction.trim() ? `"${suggestedAction.trim()}"` : 'nu
 
 <svelte:head><title>Feedback</title></svelte:head>
 
-<h1>Feedback</h1>
+<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+	<span class="dot-human" style="width: 10px; height: 10px;"></span>
+	<h1 style="margin-bottom: 0;">Feedback</h1>
+</div>
 <p class="text-muted" style="margin-bottom: 32px;">
 	Leave feedback for the lab's AI agents. Your input becomes part of the lab's
 	shared state — agents read it during their observation phase.
@@ -52,7 +55,7 @@ suggested_action: ${suggestedAction.trim() ? `"${suggestedAction.trim()}"` : 'nu
 
 <div class="grid-2" style="align-items: start;">
 	<div>
-		<h2>Submit Feedback</h2>
+		<div class="section-label">Submit Feedback</div>
 		<p class="text-sm text-muted mb-1">
 			Fill out the form to generate a feedback file. Copy the YAML and
 			submit it as a PR to the <code>feedback/</code> directory.
@@ -98,18 +101,19 @@ suggested_action: ${suggestedAction.trim() ? `"${suggestedAction.trim()}"` : 'nu
 					placeholder="e.g. Add noise level as a covariate in moderator analysis"
 				/>
 			</div>
-			<button type="submit">Generate Feedback YAML</button>
+			<button type="submit" class="btn-action">Generate Feedback YAML</button>
 		</form>
 
 		{#if yamlOutput}
-			<div class="card mt-2" style="border-left: 3px solid var(--green); position: relative;">
+			<div class="card mt-2" style="border-left: 3px solid var(--orange); position: relative;">
 				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-					<span style="color: var(--green); font-weight: 600; font-size: 14px;">
+					<span style="color: var(--orange); font-weight: 600; font-size: 14px;">
 						Feedback ready
 					</span>
 					<button
 						onclick={copyYaml}
-						style="padding: 4px 12px; font-size: 12px; background: var(--bg); border: 1px solid var(--border);"
+						class="btn-secondary"
+						style="padding: 4px 12px; font-size: 12px;"
 					>
 						{copied ? 'Copied!' : 'Copy'}
 					</button>
@@ -123,7 +127,7 @@ suggested_action: ${suggestedAction.trim() ? `"${suggestedAction.trim()}"` : 'nu
 	</div>
 
 	<div>
-		<h2>Previous Feedback</h2>
+		<div class="section-label">Previous Feedback</div>
 		{#if data.feedback.length === 0}
 			<div class="card empty">
 				<p>No feedback yet.</p>
@@ -132,20 +136,20 @@ suggested_action: ${suggestedAction.trim() ? `"${suggestedAction.trim()}"` : 'nu
 		{:else}
 			<div style="display: flex; flex-direction: column; gap: 12px;">
 				{#each data.feedback as fb}
-					<div class="card">
+					<div class="card" style="border-left: 3px solid var(--orange);">
 						<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
-							<span style="font-weight: 600; font-size: 14px;">{fb.from}</span>
-							<div style="display: flex; gap: 8px;">
+							<span style="font-weight: 600; font-size: 14px; color: var(--text);">{fb.from}</span>
+							<div style="display: flex; gap: 6px;">
 								<span class="text-sm text-muted">{fb.date}</span>
-								<span class="badge open">{fb.type.replace(/_/g, ' ')}</span>
+								<span class="badge needs-input">{fb.type.replace(/_/g, ' ')}</span>
 							</div>
 						</div>
 						{#if fb.regarding}
 							<p class="text-sm text-muted mb-1">Re: {fb.regarding}</p>
 						{/if}
-						<p style="font-size: 14px;">{fb.comment}</p>
+						<p style="font-size: 14px; color: var(--text-secondary);">{fb.comment}</p>
 						{#if fb.suggested_action}
-							<p class="text-sm mt-1" style="color: var(--yellow);">
+							<p class="text-sm mt-1" style="color: var(--orange);">
 								Action: {fb.suggested_action}
 							</p>
 						{/if}
