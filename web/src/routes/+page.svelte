@@ -1,192 +1,135 @@
 <script lang="ts">
+	import type { FeedItem } from '$lib/feed';
+
 	let { data } = $props();
 
-	const openHypotheses = data.hypotheses.filter(h => h.status === 'open').length;
-	const highPriorityOpen = data.hypotheses.filter(h => h.status === 'open' && h.priority === 'high').length;
-	const activeExperiments = data.experiments.filter(e =>
-		e.status?.status === 'in_progress' || e.status?.status === 'running'
-	).length;
-	const experimentsAwaitingReview = data.experiments.filter(
-		e => e.status?.status === 'done' && !e.status?.outcome
-	).length;
-	const findingsNeedingValidation = data.findings.filter(f => !!f.needs).length;
+	type FilterType = 'all' | 'needs_me' | 'experiments' | 'findings' | 'changes';
+	let activeFilter = $state<FilterType>('all');
 
-	const totalActions = highPriorityOpen + experimentsAwaitingReview + findingsNeedingValidation;
+	const needsHumanCount = $derived(data.feed.filter((i: FeedItem) => i.needsHuman).length);
 
-	function isHumanActivity(entry: { type: string; proposed_by: string }): boolean {
-		const humanTypes = ['feedback', 'priority_shift', 'methodology_concern'];
-		return humanTypes.includes(entry.type) || entry.proposed_by === 'human';
+	const filteredFeed = $derived.by(() => {
+		const items: FeedItem[] = data.feed;
+		switch (activeFilter) {
+			case 'needs_me':
+				return items.filter(i => i.needsHuman);
+			case 'experiments':
+				return items.filter(i =>
+					i.type === 'experiment_completed' ||
+					i.type === 'experiment_started' ||
+					i.type === 'experiment_failed'
+				);
+			case 'findings':
+				return items.filter(i =>
+					i.type === 'finding_added' ||
+					i.type === 'dead_end_recorded'
+				);
+			case 'changes':
+				return items.filter(i =>
+					i.type === 'changelog_event' ||
+					i.type === 'feedback_submitted'
+				);
+			default:
+				return items;
+		}
+	});
+
+	function setFilter(f: FilterType) {
+		activeFilter = f;
 	}
 </script>
 
 <svelte:head>
-	<title>{data.config?.name ?? 'Lab Dashboard'}</title>
+	<title>{data.config?.name ?? 'Lab'} — Feed</title>
 </svelte:head>
 
-<h1>{data.config?.name ?? 'Science Lab'}</h1>
-<p class="text-muted" style="max-width: 720px; margin-bottom: 28px;">
-	{data.config?.mission ?? ''}
-</p>
-
-<!-- Human Actions Banner -->
-{#if totalActions > 0}
-	<div class="actions-banner">
-		<div class="actions-banner-header">
-			<span class="pulse-dot"></span>
-			Actions Needed
-		</div>
-		<div class="actions-banner-items">
-			{#if highPriorityOpen > 0}
-				<a href="/hypotheses" class="action-chip">
-					<span class="chip-count">{highPriorityOpen}</span>
-					high-priority hypotheses need input
-				</a>
-			{/if}
-			{#if experimentsAwaitingReview > 0}
-				<a href="/experiments" class="action-chip">
-					<span class="chip-count">{experimentsAwaitingReview}</span>
-					experiments awaiting review
-				</a>
-			{/if}
-			{#if findingsNeedingValidation > 0}
-				<a href="/findings" class="action-chip">
-					<span class="chip-count">{findingsNeedingValidation}</span>
-					findings need validation
-				</a>
-			{/if}
-		</div>
+<!-- Compact Header -->
+<div class="feed-header">
+	<h1>{data.config?.name ?? 'Science Lab'}</h1>
+	<div class="feed-meta">
+		<span class="mission">{data.config?.mission?.split('\n')[0] ?? ''}</span>
 	</div>
-{/if}
-
-<!-- Stats -->
-<div class="section">
-	<div class="stat-row">
-		<div class="stat">
-			<div class="label">Hypotheses</div>
-			<div class="number" style="color: var(--blue)">{data.hypotheses.length}</div>
-		</div>
-		<div class="stat">
-			<div class="label">Open</div>
-			<div class="number" style="color: var(--amber)">{openHypotheses}</div>
-		</div>
-		<div class="stat">
-			<div class="label">Findings</div>
-			<div class="number" style="color: var(--teal)">{data.findings.length}</div>
-		</div>
-		<div class="stat">
-			<div class="label">Experiments</div>
-			<div class="number" style="color: var(--purple)">{data.experiments.length}</div>
-		</div>
-		<div class="stat">
-			<div class="label">Active</div>
-			<div class="number" style="color: var(--amber)">{activeExperiments}</div>
-		</div>
-		<div class="stat">
-			<div class="label">Dead Ends</div>
-			<div class="number" style="color: var(--red)">{data.dead_ends.length}</div>
-		</div>
-	</div>
-</div>
-
-<!-- Two-column grid: Research Questions + Latest Findings -->
-<div class="grid-2" style="margin-bottom: 36px; align-items: start;">
-	<!-- Research Questions -->
-	{#if data.config?.research_questions?.length}
-		<div>
-			<div class="section-label">Research Questions</div>
-			<div style="display: flex; flex-direction: column; gap: 10px;">
-				{#each data.config.research_questions as rq}
-					<div class="card">
-						<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
-							<span class="mono" style="color: var(--blue)">{rq.id}</span>
-							<span class="badge {rq.priority}">{rq.priority}</span>
-						</div>
-						<p style="font-size: 14px; color: var(--text-secondary);">{rq.question}</p>
-					</div>
-				{/each}
-			</div>
-		</div>
-	{/if}
-
-	<!-- Latest Findings -->
-	<div>
-		<div class="section-header" style="margin-bottom: 14px;">
-			<span class="section-label" style="margin-bottom: 0;">Latest Findings</span>
-			<a href="/findings" class="text-sm">View all</a>
-		</div>
-		{#if data.findings.length === 0}
-			<div class="card empty">No findings yet</div>
-		{:else}
-			<div style="display: flex; flex-direction: column; gap: 10px;">
-				{#each data.findings.slice(0, 4) as finding}
-					<div class="card" class:needs-action={!!finding.needs}>
-						<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
-							<span class="mono" style="color: var(--teal)">{finding.id}</span>
-							<span class="badge {finding.confidence}">{finding.confidence}</span>
-						</div>
-						<p style="font-size: 14px; color: var(--text-secondary);">{finding.statement}</p>
-						{#if finding.needs}
-							<p class="text-sm mt-1" style="color: var(--orange);">
-								<span class="dot-human"></span> Needs: {finding.needs}
-							</p>
-						{/if}
-					</div>
-				{/each}
-			</div>
+	<div class="feed-counts" style="margin-top: 8px;">
+		<span>{data.stats.hypotheses} hyp</span>
+		<span>&middot;</span>
+		<span>{data.stats.findings} find</span>
+		<span>&middot;</span>
+		<span>{data.stats.experiments} exp</span>
+		{#if data.stats.deadEnds > 0}
+			<span>&middot;</span>
+			<span>{data.stats.deadEnds} dead ends</span>
 		{/if}
 	</div>
 </div>
 
-<!-- Open Hypotheses -->
-<div class="section">
-	<div class="section-header">
-		<span class="section-label" style="margin-bottom: 0;">Open Hypotheses</span>
-		<a href="/hypotheses" class="text-sm">View all</a>
-	</div>
-	{#if data.hypotheses.length === 0}
-		<div class="card empty">No hypotheses yet</div>
-	{:else}
-		<div class="grid-2">
-			{#each data.hypotheses.filter(h => h.status === 'open').slice(0, 4) as hyp}
-				<div class="card" class:needs-action={hyp.priority === 'high'}>
-					<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
-						<span class="mono" style="color: var(--blue)">{hyp.id}</span>
-						<div style="display: flex; gap: 6px;">
-							{#if hyp.priority}
-								<span class="badge {hyp.priority}">{hyp.priority}</span>
-							{/if}
-							{#if hyp.priority === 'high'}
-								<span class="badge needs-input">needs input</span>
-							{/if}
-						</div>
-					</div>
-					<p style="font-size: 14px; color: var(--text-secondary);">{hyp.statement}</p>
-					{#if hyp.related_rq}
-						<p class="text-muted text-sm mt-1">Related: {hyp.related_rq}</p>
-					{/if}
-				</div>
-			{/each}
+<!-- Attention Banner -->
+{#if data.stats.needsHuman > 0}
+	<div class="attention-banner">
+		<div class="attention-text">
+			<span class="pulse-dot"></span>
+			{data.stats.needsHuman} item{data.stats.needsHuman === 1 ? '' : 's'} need your attention
 		</div>
-	{/if}
-</div>
-
-<!-- Lab Changelog (Timeline) -->
-{#if data.changelog.length > 0}
-	<div class="section">
-		<div class="section-label">Lab Changelog</div>
-		<div class="timeline">
-			{#each data.changelog.slice(0, 8) as entry}
-				<div class="timeline-entry">
-					<div class="timeline-dot" class:human={isHumanActivity(entry)} class:agent={!isHumanActivity(entry)}></div>
-					<div class="timeline-content">
-						<div class="timeline-meta">
-							<span class="timeline-date">{entry.date}</span>
-							<span class="badge {entry.type === 'feedback' ? 'needs-input' : 'pending'}">{entry.type}</span>
-						</div>
-						<p class="timeline-text">{entry.rationale}</p>
-					</div>
-				</div>
-			{/each}
-		</div>
+		<button class="btn-show-me" onclick={() => setFilter('needs_me')}>Show me</button>
 	</div>
 {/if}
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+	<button class:active={activeFilter === 'all'} onclick={() => setFilter('all')}>All</button>
+	<button
+		class:active-orange={activeFilter === 'needs_me'}
+		class:active={false}
+		onclick={() => setFilter('needs_me')}
+	>
+		Needs Me{needsHumanCount > 0 ? ` (${needsHumanCount})` : ''}
+	</button>
+	<button class:active={activeFilter === 'experiments'} onclick={() => setFilter('experiments')}>Experiments</button>
+	<button class:active={activeFilter === 'findings'} onclick={() => setFilter('findings')}>Findings</button>
+	<button class:active={activeFilter === 'changes'} onclick={() => setFilter('changes')}>Changes</button>
+</div>
+
+<!-- Feed -->
+<div class="feed-list">
+	{#if filteredFeed.length === 0}
+		<div class="card empty">
+			<p>No items match this filter.</p>
+		</div>
+	{:else}
+		{#each filteredFeed as item (item.id)}
+			<div class="feed-item type-{item.type}" class:needs-human={item.needsHuman}>
+				<div class="feed-item-header">
+					<span class="feed-item-title">{item.title}</span>
+					<div class="feed-item-badges">
+						{#each item.badges as badge}
+							<span class="badge {badge.class}">{badge.label}</span>
+						{/each}
+					</div>
+				</div>
+				<div class="feed-item-actor">
+					{item.actor.name} &middot; {item.date}
+				</div>
+				<div class="feed-item-summary">{item.summary}</div>
+				<div class="feed-item-footer">
+					{#if item.actions.length > 0}
+						<div class="feed-actions">
+							{#each item.actions as action}
+								<a
+									href={action.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="feed-action-btn"
+									class:orange={item.needsHuman}
+								>
+									{action.label}
+								</a>
+							{/each}
+						</div>
+					{/if}
+					{#if item.detailLink}
+						<a href={item.detailLink} class="detail-link">View details</a>
+					{/if}
+				</div>
+			</div>
+		{/each}
+	{/if}
+</div>

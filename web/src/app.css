@@ -605,6 +605,264 @@ label {
 	background: var(--orange);
 }
 
+/* ---- Feed: Compact Header ---- */
+.feed-header {
+	margin-bottom: 24px;
+}
+
+.feed-header h1 {
+	margin-bottom: 4px;
+}
+
+.feed-header .feed-meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.feed-header .feed-meta .mission {
+	font-size: 14px;
+	color: var(--text-secondary);
+	max-width: 600px;
+}
+
+.feed-header .feed-counts {
+	display: flex;
+	gap: 12px;
+	font-size: 13px;
+	font-family: var(--font-mono);
+	color: var(--text-muted);
+}
+
+.feed-header .feed-counts span {
+	white-space: nowrap;
+}
+
+/* ---- Feed: Attention Banner ---- */
+.attention-banner {
+	background: var(--orange-light);
+	border: 1px solid var(--orange-border);
+	border-radius: var(--radius);
+	padding: 14px 20px;
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.attention-banner .attention-text {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--orange);
+}
+
+.attention-banner .btn-show-me {
+	background: var(--orange);
+	color: #fff;
+	border: none;
+	border-radius: 20px;
+	padding: 6px 16px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.attention-banner .btn-show-me:hover {
+	background: #c2410c;
+}
+
+/* ---- Feed: Filter Bar ---- */
+.filter-bar {
+	display: flex;
+	gap: 6px;
+	margin-bottom: 24px;
+	flex-wrap: wrap;
+}
+
+.filter-bar button {
+	background: var(--bg-card);
+	color: var(--text-secondary);
+	border: 1px solid var(--border);
+	border-radius: 20px;
+	padding: 6px 16px;
+	font-size: 13px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.12s ease;
+}
+
+.filter-bar button:hover {
+	border-color: var(--blue-border);
+	color: var(--blue);
+}
+
+.filter-bar button.active {
+	background: var(--blue);
+	color: #fff;
+	border-color: var(--blue);
+}
+
+.filter-bar button.active-orange {
+	background: var(--orange);
+	color: #fff;
+	border-color: var(--orange);
+}
+
+/* ---- Feed: Items ---- */
+.feed-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.feed-item {
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 16px 20px;
+	border-left: 4px solid var(--border);
+	transition: box-shadow 0.15s ease;
+}
+
+.feed-item:hover {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Type-based left border colors */
+.feed-item.type-experiment_completed { border-left-color: var(--green); }
+.feed-item.type-experiment_started { border-left-color: var(--purple); }
+.feed-item.type-experiment_failed { border-left-color: var(--red); }
+.feed-item.type-finding_added { border-left-color: var(--teal); }
+.feed-item.type-feedback_submitted { border-left-color: var(--orange); }
+.feed-item.type-changelog_event { border-left-color: var(--text-muted); }
+.feed-item.type-dead_end_recorded { border-left-color: var(--red); }
+
+/* Items needing human action */
+.feed-item.needs-human {
+	border-left-color: var(--orange);
+	background: var(--orange-light);
+}
+
+.feed-item .feed-item-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: start;
+	margin-bottom: 4px;
+	gap: 8px;
+}
+
+.feed-item .feed-item-title {
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--text);
+}
+
+.feed-item .feed-item-badges {
+	display: flex;
+	gap: 6px;
+	flex-shrink: 0;
+}
+
+.feed-item .feed-item-actor {
+	font-size: 12px;
+	color: var(--text-muted);
+	font-family: var(--font-mono);
+	margin-bottom: 6px;
+}
+
+.feed-item .feed-item-summary {
+	font-size: 14px;
+	color: var(--text-secondary);
+	margin-bottom: 8px;
+	line-height: 1.5;
+}
+
+.feed-item .feed-item-footer {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.feed-item .feed-item-footer .detail-link {
+	font-size: 13px;
+	color: var(--text-muted);
+}
+
+/* ---- Feed: Action Buttons ---- */
+.feed-actions {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.feed-action-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	background: var(--bg);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	padding: 4px 12px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--blue);
+	text-decoration: none;
+	cursor: pointer;
+	transition: all 0.12s ease;
+}
+
+.feed-action-btn:hover {
+	background: var(--blue-light);
+	border-color: var(--blue-border);
+	text-decoration: none;
+}
+
+.feed-action-btn.orange {
+	color: var(--orange);
+}
+
+.feed-action-btn.orange:hover {
+	background: var(--orange-light);
+	border-color: var(--orange-border);
+}
+
+/* ---- Knowledge: Tab Bar ---- */
+.knowledge-tabs {
+	display: flex;
+	gap: 0;
+	border-bottom: 2px solid var(--border);
+	margin-bottom: 24px;
+}
+
+.knowledge-tabs button {
+	background: none;
+	border: none;
+	border-bottom: 2px solid transparent;
+	margin-bottom: -2px;
+	padding: 10px 20px;
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-muted);
+	cursor: pointer;
+	transition: all 0.12s ease;
+	border-radius: 0;
+}
+
+.knowledge-tabs button:hover {
+	color: var(--text);
+}
+
+.knowledge-tabs button.active {
+	color: var(--blue);
+	border-bottom-color: var(--blue);
+	font-weight: 600;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
 	.sidebar {

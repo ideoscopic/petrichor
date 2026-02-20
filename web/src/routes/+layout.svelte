@@ -5,12 +5,10 @@
 	let { children, data } = $props();
 
 	const navLinks = [
-		{ href: '/', label: 'Dashboard', icon: '◫' },
-		{ href: '/hypotheses', label: 'Hypotheses', icon: '◇' },
+		{ href: '/', label: 'Feed', icon: '◫' },
 		{ href: '/experiments', label: 'Experiments', icon: '⬡' },
-		{ href: '/findings', label: 'Findings', icon: '◉' },
-		{ href: '/workflows', label: 'Workflows', icon: '↻' },
-		{ href: '/feedback', label: 'Feedback', icon: '◈' },
+		{ href: '/knowledge', label: 'Knowledge', icon: '◉' },
+		{ href: '/feedback', label: 'Give Feedback', icon: '◈' },
 	];
 
 	const actions = $derived(data.humanActions);
@@ -50,7 +48,7 @@
 				</div>
 				<div class="sidebar-actions-list">
 					{#if actions.hypothesesNeedingInput > 0}
-						<a href="/hypotheses" class="sidebar-action-item">
+						<a href="/knowledge" class="sidebar-action-item">
 							<span class="action-count">{actions.hypothesesNeedingInput}</span>
 							hypothesis needs input
 						</a>
@@ -62,7 +60,7 @@
 						</a>
 					{/if}
 					{#if actions.findingsNeedingValidation > 0}
-						<a href="/findings" class="sidebar-action-item">
+						<a href="/knowledge" class="sidebar-action-item">
 							<span class="action-count">{actions.findingsNeedingValidation}</span>
 							finding needs validation
 						</a>

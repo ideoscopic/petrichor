@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { marked } from 'marked';
+	import { experimentPRUrl, experimentFeedbackUrl } from '$lib/feed';
 	let { data } = $props();
 	const exp = data.experiment;
 </script>
@@ -60,6 +61,16 @@
 		{/if}
 	</div>
 {/if}
+
+<!-- Action Buttons -->
+<div class="feed-actions mt-2">
+	<a href={experimentPRUrl(exp.id)} target="_blank" rel="noopener noreferrer" class="feed-action-btn">
+		Review PR
+	</a>
+	<a href={experimentFeedbackUrl(exp.id)} target="_blank" rel="noopener noreferrer" class="feed-action-btn orange">
+		Submit Feedback
+	</a>
+</div>
 
 {#if exp.hypothesis}
 	<div class="card mt-2">
