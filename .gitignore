@@ -9,3 +9,4 @@ __pycache__/
 .DS_Store
 web/src/lib/lab-data.json
 web/build/
+.vercel
