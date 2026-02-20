@@ -1,0 +1,98 @@
+study_id: "berman_2012"
+authors: "Berman, Kross, Krpan, Askren, Burson, Deldin, Kaplan, Sherdell, Gotlib, Jonides"
+year: 2012
+title: "Interacting with nature improves cognition and affect for individuals with depression"
+journal: "Journal of Affective Disorders"
+doi: "10.1016/j.jad.2012.03.012"
+pmid: 22464936
+country: "United States"
+design: "crossover"  # within-subjects counterbalanced
+
+population:
+  n: 20
+  clinical_status: "clinical"
+  condition: "depression (MDD)"
+  baseline_severity: "BDI-II M=30.1 (moderate-severe)"
+  age_mean: 26
+  percent_female: 60
+
+exposure:
+  type: "park"  # arboretum
+  activity: "walking"
+  duration_minutes: 50
+  single_session: true
+  description: "Walk through Ann Arbor Arboretum with prior rumination induction"
+
+control:
+  type: "active-urban"
+  description: "Walk through downtown Ann Arbor with prior rumination induction"
+
+effect_sizes:
+  - measure: "Backward Digit Span (BDS)"
+    domain: "cognitive"
+    hedges_g: 0.5776
+    se: 0.3231
+    ci_lower: -0.055
+    ci_upper: 1.2102
+    p_value: 0.001
+    direction: "nature > urban"
+    notes: "Interaction F(1,18)=20.5, p<.001, ηp²=.53. CI wide due to between-subjects calculation on crossover data."
+
+  - measure: "PANAS Positive Affect"
+    domain: "wellbeing"
+    hedges_g: 0.2292
+    se: 0.3173
+    ci_lower: -0.3926
+    ci_upper: 0.8511
+    p_value: 0.05
+    direction: "nature > urban"
+    notes: "Interaction F(1,16)=6.62, p<.05, ηp²=.29. Both improved; nature improved more."
+
+  - measure: "PANAS Negative Affect"
+    domain: "stress"
+    hedges_g: -0.1367
+    se: 0.3164
+    ci_lower: -0.7573
+    ci_upper: 0.4838
+    p_value: null
+    direction: "no significant difference"
+    notes: "No significant interaction F(1,15)=0.13, n.s. Both conditions reduced NA."
+
+  - measure: "Rumination during walk"
+    domain: "cognitive"
+    hedges_g: -0.0946
+    se: 0.3164
+    ci_lower: -0.7148
+    ci_upper: 0.5255
+    p_value: 0.72
+    direction: "no significant difference"
+    notes: "t(18)=0.37, p>.72."
+
+quality:
+  overall_risk_of_bias: "high"
+  quality_score: 2.3
+  key_concern: "Participants not blinded to walk location with self-report outcomes"
+  strengths:
+    - "Crossover design controls individual differences"
+    - "Clinical MDD sample (not just healthy volunteers)"
+    - "Validated outcome measures"
+  weaknesses:
+    - "Small sample (N=20)"
+    - "No blinding possible for location"
+    - "Single session — no dose-response data"
+    - "Rumination induction is unusual, limits comparability"
+
+relevance:
+  hypotheses: ["H001", "H004"]
+  notes: >
+    Directly relevant to H004 (clinical vs healthy populations) as this is
+    one of few RCTs using clinically depressed participants. Relevant to H001
+    only as a single dose point (50 min, single session). The medium cognitive
+    effect size (g=0.58) in a depressed sample is notable. The lack of
+    differential effect on negative affect suggests nature's advantage in
+    depression may operate more through cognitive restoration than direct
+    mood repair.
+
+extracted_by: "claude-opus-4-6"
+extraction_date: "2026-02-20"
+experiment: "001-berman-2012-extraction"

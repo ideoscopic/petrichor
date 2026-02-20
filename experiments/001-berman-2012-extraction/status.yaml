@@ -1,0 +1,8 @@
+status: "done"
+agent: "claude-opus-4-6"
+started: "2026-02-20T00:00:00Z"
+completed: "2026-02-20T00:00:00Z"
+workflow: "literature-extraction"
+hypothesis_ref: "H001, H004"
+outcome: "N/A"
+summary: "Extracting quantitative data from Berman et al. (2012) crossover RCT of nature walks with MDD patients"
